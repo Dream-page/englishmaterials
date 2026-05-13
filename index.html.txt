@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>초등 영어 전담 수업 자료 허브</title>
+    
+    <!-- GitHub Pages 공유용 메타 태그 추가 -->
+    <meta property="og:title" content="초등 영어 전담 수업 자료 허브">
+    <meta property="og:description" content="분류와 검색을 통해 필요한 수업 자료를 1초 만에 찾으세요.">
+    <meta property="og:type" content="website">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans KR', sans-serif;
+            color: #1f2937;
+            /* Soft pastel moving background */
+            background: linear-gradient(-45deg, #fbc2eb, #e6dee9, #a6c1ee, #fccb90);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Essential Glassmorphism Classes */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.15);
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .glass-input {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            color: #1f2937;
+        }
+        
+        .glass-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.8);
+            border-color: #a6c1ee;
+            box-shadow: 0 0 0 3px rgba(166, 193, 238, 0.3);
+        }
+
+        .glass-btn {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            transition: all 0.2s ease;
+        }
+
+        .glass-btn:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: scale(1.02);
+        }
+
+        .glass-btn-primary {
+            background: linear-gradient(135deg, rgba(166, 193, 238, 0.8), rgba(251, 194, 235, 0.8));
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .glass-btn-primary:hover {
+            background: linear-gradient(135deg, rgba(166, 193, 238, 1), rgba(251, 194, 235, 1));
+        }
+
+        /* Adjust scroll position for sticky nav */
+        html { scroll-padding-top: 5.5rem; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.5); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.8); }
+    </style>
+</head>
+<body class="antialiased relative">
+
+    <nav class="glass sticky top-0 z-50 w-full transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo/Title -->
+                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0); setGrade('all'); setCategory('all'); document.getElementById('searchInput').value='';">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-400 to-pink-400 flex items-center justify-center text-white shadow-sm">
+                        <i class="fa-solid fa-apple-whole"></i>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight text-gray-800">English_Hub</span>
+                </div>
+
+                <!-- Desktop Menu (Grade Filters) -->
+                <div class="hidden md:flex space-x-1 lg:space-x-2 items-center">
+                    <button onclick="setGrade('all')" id="nav-all" class="nav-grade px-3 py-2 rounded-lg text-sm transition bg-white/80 font-bold text-blue-600 shadow-sm">전체보기</button>
+                    <button onclick="setGrade('grade-3')" id="nav-grade-3" class="nav-grade px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-white/50 transition">3학년</button>
+                    <button onclick="setGrade('grade-4')" id="nav-grade-4" class="nav-grade px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-white/50 transition">4학년</button>
+                    <button onclick="setGrade('grade-5')" id="nav-grade-5" class="nav-grade px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-white/50 transition">5학년</button>
+                    <button onclick="setGrade('grade-6')" id="nav-grade-6" class="nav-grade px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-white/50 transition">6학년</button>
+                    <button onclick="setGrade('common')" id="nav-common" class="nav-grade px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-white/50 transition">공통/기타</button>
+                    
+                    <!-- Admin Toggle Button -->
+                    <button onclick="toggleAdminMode()" class="ml-4 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-white/50 transition flex items-center gap-1 border border-transparent hover:border-blue-100">
+                        <i id="adminBtnIcon" class="fa-solid fa-lock"></i> <span id="adminBtnText">관리자 모드</span>
+                    </button>
+
+                    <button onclick="toggleModal('addModal')" class="add-resource-btn hidden ml-2 px-4 py-2 rounded-xl text-sm font-semibold glass-btn-primary shadow-md flex items-center gap-2 transition">
+                        <i class="fa-solid fa-plus"></i> 자료 추가
+                    </button>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button onclick="toggleMobileMenu()" class="text-gray-700 hover:text-gray-900 focus:outline-none p-2 rounded-lg hover:bg-white/50 transition">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden glass border-t border-white/40 absolute w-full left-0">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col">
+                <button onclick="setGrade('all'); toggleMobileMenu()" class="text-left block px-3 py-2 rounded-md text-base font-medium text-blue-600 bg-white/60">전체보기</button>
+                <button onclick="setGrade('grade-3'); toggleMobileMenu()" class="text-left block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-white/60">3학년</button>
+                <button onclick="setGrade('grade-4'); toggleMobileMenu()" class="text-left block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-white/60">4학년</button>
+                <button onclick="setGrade('grade-5'); toggleMobileMenu()" class="text-left block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-white/60">5학년</button>
+                <button onclick="setGrade('grade-6'); toggleMobileMenu()" class="text-left block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-white/60">6학년</button>
+                <button onclick="setGrade('common'); toggleMobileMenu()" class="text-left block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-white/60">공통/기타</button>
+                
+                <div class="border-t border-white/40 my-2"></div>
+                <button onclick="toggleAdminMode(); toggleMobileMenu()" class="w-full text-left block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-white/60">
+                    <i id="mobileAdminBtnIcon" class="fa-solid fa-lock w-5"></i> <span id="mobileAdminBtnText">관리자 모드</span>
+                </button>
+                <button onclick="toggleModal('addModal'); toggleMobileMenu()" class="add-resource-btn hidden w-full text-left mt-1 block px-3 py-2 rounded-md text-base font-bold text-blue-600 hover:bg-white/60">
+                    + 자료 추가하기
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        
+        <!-- Header area -->
+        <div class="text-center mb-8 relative z-10">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight mb-3">
+                <span id="currentGradeTitle" class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-pink-500">전체 학년</span> 스마트 보관함
+            </h1>
+            <p class="text-base text-gray-600 font-medium">분류와 검색을 통해 필요한 수업 자료를 1초 만에 찾으세요.</p>
+        </div>
+
+        <!-- Search & Filter Controls -->
+        <div class="bg-white/30 backdrop-blur-md rounded-3xl p-4 sm:p-6 mb-8 border border-white/60 shadow-sm relative z-10">
+            
+            <!-- Search Input -->
+            <div class="relative mb-6">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <i class="fa-solid fa-search text-gray-400"></i>
+                </div>
+                <input type="text" id="searchInput" oninput="renderAll()" placeholder="자료 제목, 내용, 키워드 검색..." class="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/60 border border-white/80 text-lg placeholder-gray-500 text-gray-800 focus:outline-none focus:ring-4 focus:ring-blue-100/50 transition-all shadow-inner">
+            </div>
+
+            <!-- Category Pills -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                <span class="text-sm font-bold text-gray-500 flex-shrink-0"><i class="fa-solid fa-filter mr-1"></i> 자료 분류:</span>
+                <div class="flex flex-wrap gap-2 w-full">
+                    <button onclick="setCategory('all')" id="cat-all" class="cat-pill px-4 py-2 rounded-full text-sm font-bold transition-all bg-blue-500 text-white border-blue-400 shadow-md">전체</button>
+                    <button onclick="setCategory('chant')" id="cat-chant" class="cat-pill px-4 py-2 rounded-full text-sm font-medium transition-all glass bg-white/40 text-gray-700 hover:bg-white/80">챈트/노래</button>
+                    <button onclick="setCategory('worksheet')" id="cat-worksheet" class="cat-pill px-4 py-2 rounded-full text-sm font-medium transition-all glass bg-white/40 text-gray-700 hover:bg-white/80">학습지/활동</button>
+                    <button onclick="setCategory('video')" id="cat-video" class="cat-pill px-4 py-2 rounded-full text-sm font-medium transition-all glass bg-white/40 text-gray-700 hover:bg-white/80">일반 영상</button>
+                    <button onclick="setCategory('game')" id="cat-game" class="cat-pill px-4 py-2 rounded-full text-sm font-medium transition-all glass bg-white/40 text-gray-700 hover:bg-white/80">게임/퀴즈</button>
+                    <button onclick="setCategory('memo')" id="cat-memo" class="cat-pill px-4 py-2 rounded-full text-sm font-medium transition-all glass bg-white/40 text-gray-700 hover:bg-white/80">수업 팁/메모</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Stats -->
+        <div class="flex justify-between items-end mb-4 px-2">
+            <h2 class="text-xl font-bold text-gray-800"><i class="fa-regular fa-folder-open text-blue-500 mr-2"></i>검색 결과</h2>
+            <span class="text-sm font-semibold text-gray-500 bg-white/50 px-3 py-1 rounded-full border border-white/40" id="resultCount">총 0개</span>
+        </div>
+
+        <!-- Dynamic List Container -->
+        <div id="dynamic-sections" class="w-full relative z-10 flex flex-col gap-3">
+            <!-- JS 렌더링 영역 -->
+        </div>
+
+    </main>
+
+    <!-- Detail Modal -->
+    <div id="detailModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-gray-900/40 backdrop-blur-sm transition-opacity" onclick="toggleModal('detailModal')"></div>
+        <div class="glass rounded-3xl w-full max-w-2xl relative z-10 transform scale-95 opacity-0 transition-all duration-300 shadow-2xl flex flex-col max-h-[90vh]" id="detailModalContent">
+            <!-- JS 동적 렌더링 -->
+        </div>
+    </div>
+
+    <!-- Add Resource Modal (개편됨) -->
+    <div id="addModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-gray-900/40 backdrop-blur-sm transition-opacity" onclick="toggleModal('addModal')"></div>
+        
+        <div class="glass rounded-3xl w-full max-w-lg relative z-10 transform scale-95 opacity-0 transition-all duration-300 shadow-2xl" id="modalContent">
+            <div class="p-6 sm:p-8 overflow-y-auto max-h-[90vh] custom-scrollbar">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-gray-900">새 자료 추가하기</h3>
+                    <button type="button" onclick="toggleModal('addModal')" class="text-gray-500 hover:text-gray-900 w-8 h-8 rounded-full glass-btn flex items-center justify-center">
+                        <i class="fa-solid fa-times"></i>
+                    </button>
+                </div>
+
+                <form id="resourceForm" onsubmit="submitForm(event)" class="space-y-5">
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <!-- 1. 대상 학년 -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">대상 학년</label>
+                            <select id="gradeSelect" class="w-full px-4 py-3 rounded-xl glass-input appearance-none cursor-pointer focus:ring-2 focus:ring-blue-300" required>
+                                <option value="grade-3">3학년</option>
+                                <option value="grade-4">4학년</option>
+                                <option value="grade-5">5학년</option>
+                                <option value="grade-6">6학년</option>
+                                <option value="common">공통/기타</option>
+                            </select>
+                        </div>
+                        
+                        <!-- 2. 자료 분류 -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">자료 분류</label>
+                            <select id="categorySelect" class="w-full px-4 py-3 rounded-xl glass-input appearance-none cursor-pointer focus:ring-2 focus:ring-blue-300" required>
+                                <option value="chant">챈트/노래</option>
+                                <option value="worksheet">학습지/활동</option>
+                                <option value="video">일반 영상</option>
+                                <option value="game">게임/퀴즈</option>
+                                <option value="memo">수업 팁/메모</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 3. 자료 형식 (업로드 방식) -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">자료 형식 (업로드 방식)</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <label class="glass-card rounded-xl p-3 flex flex-col items-center justify-center gap-1 cursor-pointer border-blue-400 bg-blue-50/30 transition-colors text-center" id="labelYoutube">
+                                <input type="radio" name="uploadType" value="youtube" onchange="toggleInputType('youtube')" class="hidden" checked>
+                                <i class="fa-brands fa-youtube text-red-500 text-lg"></i>
+                                <span class="font-bold text-gray-800 text-[11px]">웹 링크/영상</span>
+                            </label>
+                            <label class="glass-card rounded-xl p-3 flex flex-col items-center justify-center gap-1 cursor-pointer border-transparent hover:border-blue-300 transition-colors text-center" id="labelFile">
+                                <input type="radio" name="uploadType" value="file" onchange="toggleInputType('file')" class="hidden">
+                                <i class="fa-solid fa-file-arrow-up text-blue-500 text-lg"></i>
+                                <span class="font-bold text-gray-800 text-[11px]">파일 업로드</span>
+                            </label>
+                            <label class="glass-card rounded-xl p-3 flex flex-col items-center justify-center gap-1 cursor-pointer border-transparent hover:border-blue-300 transition-colors text-center" id="labelMemo">
+                                <input type="radio" name="uploadType" value="memo" onchange="toggleInputType('memo')" class="hidden">
+                                <i class="fa-solid fa-pen-to-square text-yellow-500 text-lg"></i>
+                                <span class="font-bold text-gray-800 text-[11px]">직접 텍스트 작성</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-white/50 pt-4">
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">제목 (Title)</label>
+                        <input type="text" id="titleInput" placeholder="예: 3단원 날씨 표현 애니메이션" class="w-full px-4 py-3 rounded-xl glass-input placeholder-gray-400 mb-4" required>
+                        
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">설명 (선택사항)</label>
+                        <input type="text" id="descInput" placeholder="자료에 대한 간단한 한 줄 설명" class="w-full px-4 py-3 rounded-xl glass-input placeholder-gray-400">
+                    </div>
+
+                    <!-- 동적 입력 영역 -->
+                    <div id="urlInputGroup" class="bg-white/40 p-4 rounded-xl border border-white/60">
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">링크 주소 (URL)</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-link text-gray-400"></i>
+                            </div>
+                            <input type="url" id="urlInput" placeholder="https://..." class="w-full pl-10 pr-4 py-3 rounded-xl bg-white/60 border border-white/80 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all" required>
+                        </div>
+                    </div>
+
+                    <div id="fileInputGroup" class="hidden bg-white/40 p-4 rounded-xl border border-white/60">
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">첨부 파일</label>
+                        <input type="file" id="fileInput" class="w-full px-4 py-2 rounded-xl bg-white/60 text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+                        <p class="text-xs text-gray-500 mt-2">지원: PDF, HWP, DOCX, PPT, MP4 등</p>
+                    </div>
+                    
+                    <div id="memoInputGroup" class="hidden bg-white/40 p-4 rounded-xl border border-white/60">
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">텍스트 메모 내용</label>
+                        <textarea id="memoInput" rows="5" placeholder="수업 스크립트나 활동 진행 방법을 자유롭게 적어주세요." class="w-full px-4 py-3 rounded-xl bg-white/60 border border-white/80 focus:outline-none focus:ring-2 focus:ring-blue-300 custom-scrollbar"></textarea>
+                    </div>
+
+                    <div class="pt-2">
+                        <button type="submit" class="w-full py-4 rounded-xl glass-btn-primary font-bold text-lg shadow-md transition-transform hover:-translate-y-1">
+                            보관함에 등록하기
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-5 right-5 glass border-green-200 bg-green-50/80 transform translate-y-20 opacity-0 transition-all duration-300 rounded-2xl p-4 shadow-lg flex items-center gap-3 z-50">
+        <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 shadow-inner">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <span class="font-semibold text-gray-800" id="toastMsg">자료가 성공적으로 추가되었습니다!</span>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, addDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- Firebase 초기화 및 환경 설정 ---
+        const appId = 'my-english-hub-1'; // 원하시는 고유 ID로 변경하셔도 됩니다.
+        
+        // 💡 여기에 파이어베이스 콘솔에서 발급받은 선생님의 고유 키를 붙여넣으세요!
+        const firebaseConfig = {
+          apiKey: "AIzaSyAsKRqF2hMioTIlXa5pZPnql8oQ8I42tR4",
+  authDomain: "englishhub-39db4.firebaseapp.com",
+  projectId: "englishhub-39db4",
+  storageBucket: "englishhub-39db4.firebasestorage.app",
+  messagingSenderId: "242282329359",
+  appId: "1:242282329359:web:63d213bd387ab18bfffa7a",
+  measurementId: "G-ZXW70LBXZM"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // --- 1. 상태 및 맵핑 데이터 ---
+        let isAdmin = false;
+        let currentGrade = 'all';    
+        let currentCategory = 'all'; 
+        let resources = []; // 데이터베이스에서 실시간으로 불러올 배열
+
+        const gradeMap = {
+            'all': '전체 학년',
+            'grade-3': '3학년',
+            'grade-4': '4학년',
+            'grade-5': '5학년',
+            'grade-6': '6학년',
+            'common': '공통/기타'
+        };
+
+        const categoryMap = {
+            'chant': { label: '챈트/노래', badgeStyle: 'bg-pink-100 text-pink-700 border-pink-200' },
+            'worksheet': { label: '학습지/활동', badgeStyle: 'bg-blue-100 text-blue-700 border-blue-200' },
+            'video': { label: '일반 영상', badgeStyle: 'bg-red-100 text-red-700 border-red-200' },
+            'game': { label: '게임/퀴즈', badgeStyle: 'bg-purple-100 text-purple-700 border-purple-200' },
+            'memo': { label: '수업 팁', badgeStyle: 'bg-yellow-100 text-yellow-700 border-yellow-200' }
+        };
+
+        const typeConfig = {
+            'youtube': { icon: 'fa-youtube', color: 'text-red-500', bg: 'bg-white', label: 'Link' },
+            'file': { icon: 'fa-file-lines', color: 'text-blue-500', bg: 'bg-white', label: 'File' },
+            'memo': { icon: 'fa-align-left', color: 'text-yellow-600', bg: 'bg-white', label: 'Text' }
+        };
+
+        // --- 2. 인증 및 실시간 데이터 연동 ---
+        async function initApp() {
+            try {
+                // 환경 시스템 토큰 확인을 제외하고, 선생님 프로젝트 설정에 맞춰 익명 로그인만 바로 실행합니다.
+                await signInAnonymously(auth);
+                
+                // 인증 성공 후 데이터 로드
+                loadData();
+            } catch (error) {
+                console.error("인증 오류:", error);
+                showToast("인증에 실패했습니다. (파이어베이스 Authentication에서 '익명' 로그인을 켰는지 확인해주세요!)");
+            }
+        }
+
+        function loadData() {
+            const user = auth.currentUser;
+            if (!user) return;
+
+            // 공개 데이터베이스 컬렉션 연결 (RULE 1 준수)
+            const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'resources');
+            
+            onSnapshot(colRef, (snapshot) => {
+                resources = [];
+                snapshot.forEach(docSnap => {
+                    resources.push({ id: docSnap.id, ...docSnap.data() });
+                });
+                
+                // 최신순으로 정렬 (RULE 2 준수: JS 메모리 내 정렬)
+                resources.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+                renderAll();
+            }, (error) => {
+                console.error("데이터 로드 오류:", error);
+                showToast("데이터를 불러오는데 오류가 발생했습니다.");
+            });
+        }
+
+        // --- 3. 필터링 및 렌더링 ---
+        function setGrade(grade) {
+            currentGrade = grade;
+            document.getElementById('currentGradeTitle').textContent = gradeMap[grade];
+            
+            document.querySelectorAll('.nav-grade').forEach(el => {
+                el.classList.remove('bg-white/80', 'font-bold', 'text-blue-600', 'shadow-sm');
+                el.classList.add('text-gray-700', 'hover:bg-white/50', 'font-medium');
+            });
+            const activeNav = document.getElementById('nav-' + grade);
+            if(activeNav) {
+                activeNav.classList.add('bg-white/80', 'font-bold', 'text-blue-600', 'shadow-sm');
+                activeNav.classList.remove('text-gray-700', 'hover:bg-white/50', 'font-medium');
+            }
+            renderAll();
+        }
+
+        function setCategory(cat) {
+            currentCategory = cat;
+            
+            document.querySelectorAll('.cat-pill').forEach(el => {
+                el.classList.remove('bg-blue-500', 'text-white', 'border-blue-400', 'shadow-md');
+                el.classList.add('glass', 'bg-white/40', 'text-gray-700', 'hover:bg-white/80');
+            });
+            const activeCat = document.getElementById('cat-' + cat);
+            if(activeCat) {
+                activeCat.classList.add('bg-blue-500', 'text-white', 'border-blue-400', 'shadow-md');
+                activeCat.classList.remove('glass', 'bg-white/40', 'text-gray-700', 'hover:bg-white/80');
+            }
+            renderAll();
+        }
+
+        function renderAll() {
+            const container = document.getElementById('dynamic-sections');
+            const countLabel = document.getElementById('resultCount');
+            const searchInput = document.getElementById('searchInput');
+            const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+            
+            const filteredRes = resources.filter(r => {
+                const matchGrade = currentGrade === 'all' || r.grade === currentGrade;
+                const matchCat = currentCategory === 'all' || r.category === currentCategory;
+                const matchSearch = r.title.toLowerCase().includes(searchTerm) || 
+                                    (r.desc && r.desc.toLowerCase().includes(searchTerm)) || 
+                                    (r.content && r.content.toLowerCase().includes(searchTerm));
+                return matchGrade && matchCat && matchSearch;
+            });
+
+            countLabel.textContent = `총 ${filteredRes.length}개`;
+            container.innerHTML = '';
+
+            if(filteredRes.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-20 glass rounded-3xl mt-4">
+                        <div class="w-16 h-16 bg-white/50 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400 text-2xl">
+                            <i class="fa-solid fa-magnifying-glass-minus"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-800 mb-1">조건에 맞는 자료가 없습니다</h3>
+                        <p class="text-sm text-gray-500">다른 필터를 선택하거나 새 자료를 추가해보세요.</p>
+                    </div>`;
+                return;
+            }
+
+            // Firebase 고유 ID (문자열)를 따옴표로 감싸서 전달
+            const listHtml = filteredRes.map(res => {
+                const tConf = typeConfig[res.uploadType] || typeConfig['file'];
+                const gradeStr = gradeMap[res.grade];
+                const catConf = categoryMap[res.category] || categoryMap['memo'];
+
+                return `
+                    <div onclick="openDetail('${res.id}')" class="glass-card rounded-2xl p-4 sm:p-5 flex items-center justify-between group cursor-pointer hover:bg-white/70 transition-all duration-200 relative shadow-sm hover:shadow-md">
+                        <div class="flex items-start sm:items-center gap-4 w-full pr-12">
+                            <div class="hidden sm:flex w-12 h-12 rounded-full ${tConf.bg} ${tConf.color} items-center justify-center flex-shrink-0 text-xl shadow-sm border border-gray-100">
+                                <i class="fa-solid ${tConf.icon}"></i>
+                            </div>
+                            
+                            <div class="flex-grow overflow-hidden">
+                                <div class="flex flex-wrap gap-1.5 mb-2">
+                                    <span class="text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded border bg-white/60 text-gray-600 border-gray-200 shadow-sm">${gradeStr}</span>
+                                    <span class="text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded border ${catConf.badgeStyle} shadow-sm">${catConf.label}</span>
+                                </div>
+                                <h3 class="text-base sm:text-lg font-bold text-gray-900 truncate mb-1 group-hover:text-blue-600 transition-colors">${res.title}</h3>
+                                <p class="text-xs sm:text-sm text-gray-500 truncate">${res.desc}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="absolute right-4 flex items-center gap-2">
+                            <button class="admin-btn ${isAdmin ? 'flex' : 'hidden'} w-9 h-9 rounded-full bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition items-center justify-center z-10 border border-red-100 shadow-sm" onclick="deleteResource(event, '${res.id}')" title="삭제">
+                                <i class="fa-solid fa-trash-can text-sm"></i>
+                            </button>
+                            <div class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100/50 text-gray-400 group-hover:bg-blue-50 group-hover:text-blue-500 transition">
+                                <i class="fa-solid fa-chevron-right text-sm"></i>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = listHtml;
+        }
+
+        // --- 4. 모달 및 폼 로직 ---
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            const contentId = modalId === 'addModal' ? 'modalContent' : 'detailModalContent';
+            const modalContent = document.getElementById(contentId);
+            
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modalContent.classList.remove('scale-95', 'opacity-0');
+                    modalContent.classList.add('scale-100', 'opacity-100');
+                }, 10);
+            } else {
+                modalContent.classList.remove('scale-100', 'opacity-100');
+                modalContent.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 300);
+            }
+        }
+
+        function openDetail(id) {
+            const res = resources.find(r => r.id === id);
+            if(!res) return;
+            
+            const contentArea = document.getElementById('detailModalContent');
+            const gradeStr = gradeMap[res.grade];
+            const catConf = categoryMap[res.category] || categoryMap['memo'];
+            
+            let actionHtml = '';
+            if(res.uploadType === 'youtube' && res.link !== '#') {
+                actionHtml = `<a href="${res.link}" target="_blank" class="w-full py-4 rounded-xl glass-btn-primary font-bold text-lg flex items-center justify-center gap-2 mt-6 transition-transform hover:-translate-y-1"><i class="fa-solid fa-play"></i> 영상 보러가기</a>`;
+            } else if(res.uploadType === 'file') {
+                actionHtml = `<button onclick="showToast('첨부파일 다운로드 기능은 준비 중입니다.')" class="w-full py-4 rounded-xl glass-btn-primary font-bold text-lg flex items-center justify-center gap-2 mt-6 transition-transform hover:-translate-y-1"><i class="fa-solid fa-download"></i> 다운로드 하기</button>`;
+            }
+            
+            let bodyHtml = '';
+            if(res.uploadType === 'memo' || res.content) {
+                bodyHtml = `
+                    <div class="mt-5">
+                        <h4 class="text-xs font-bold text-gray-400 mb-2 uppercase tracking-wider">상세 내용 / 스크립트</h4>
+                        <div class="p-5 bg-white/70 rounded-2xl text-gray-800 whitespace-pre-wrap leading-relaxed text-sm sm:text-base border border-gray-200/50 shadow-inner custom-scrollbar overflow-auto max-h-64">${res.content || res.desc}</div>
+                    </div>`;
+            }
+            
+            contentArea.innerHTML = `
+                <div class="p-6 sm:p-8 overflow-y-auto flex-grow custom-scrollbar">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex flex-wrap gap-2 mb-2">
+                            <span class="text-xs font-bold px-2 py-1 rounded bg-gray-100 text-gray-600 border border-gray-200">${gradeStr}</span>
+                            <span class="text-xs font-bold px-2 py-1 rounded ${catConf.badgeStyle}">${catConf.label}</span>
+                        </div>
+                        <button onclick="toggleModal('detailModal')" class="text-gray-400 hover:text-gray-800 w-8 h-8 rounded-full bg-white/50 hover:bg-white border border-white/60 transition shadow-sm flex items-center justify-center">
+                            <i class="fa-solid fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <h3 class="text-2xl font-bold text-gray-900 leading-tight mb-4">${res.title}</h3>
+                    
+                    <div class="text-gray-600 bg-white/50 p-4 rounded-xl border border-white/60 text-sm leading-relaxed shadow-sm">
+                        <i class="fa-solid fa-circle-info mr-1 text-gray-400"></i> ${res.desc || '등록된 설명이 없습니다.'}
+                    </div>
+                    
+                    ${bodyHtml}
+                    ${actionHtml}
+                </div>
+            `;
+            
+            toggleModal('detailModal');
+        }
+
+        // Firebase 데이터 삭제 로직 (커스텀 확인 모달 적용)
+        function deleteResource(e, id) {
+            e.stopPropagation();
+            
+            // 브라우저 기본 confirm 대신 커스텀 모달 생성
+            const confirmBox = document.createElement('div');
+            confirmBox.className = 'fixed inset-0 z-[200] flex items-center justify-center p-4 bg-gray-900/40 backdrop-blur-sm transition-opacity';
+            confirmBox.innerHTML = `
+                <div class="glass rounded-3xl w-full max-w-sm p-6 transform transition-all shadow-2xl flex flex-col bg-white/90 border border-white/60">
+                    <div class="w-12 h-12 bg-red-100 text-red-500 rounded-full flex items-center justify-center mb-4 text-xl mx-auto shadow-inner">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2 text-center">자료 삭제</h3>
+                    <p class="text-gray-600 mb-6 text-sm text-center">이 자료를 정말 삭제하시겠습니까?<br>이 작업은 되돌릴 수 없습니다.</p>
+                    <div class="flex gap-3 justify-center w-full">
+                        <button id="cancelDelBtn" class="flex-1 py-3 rounded-xl bg-gray-100 text-gray-700 font-bold hover:bg-gray-200 transition">취소</button>
+                        <button id="confirmDelBtn" class="flex-1 py-3 rounded-xl bg-red-500 text-white font-bold hover:bg-red-600 transition shadow-md">삭제하기</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(confirmBox);
+
+            document.getElementById('cancelDelBtn').onclick = () => confirmBox.remove();
+            document.getElementById('confirmDelBtn').onclick = async () => {
+                confirmBox.remove();
+                try {
+                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'resources', id));
+                    showToast('자료가 성공적으로 삭제되었습니다.');
+                } catch(err) {
+                    console.error("삭제 오류:", err);
+                    showToast('삭제 중 오류가 발생했습니다.');
+                }
+            };
+        }
+
+        function toggleInputType(type) {
+            const urlGroup = document.getElementById('urlInputGroup');
+            const fileGroup = document.getElementById('fileInputGroup');
+            const memoGroup = document.getElementById('memoInputGroup');
+            
+            [urlGroup, fileGroup, memoGroup].forEach(el => el.classList.add('hidden'));
+            document.getElementById('urlInput').removeAttribute('required');
+            document.getElementById('memoInput').removeAttribute('required');
+
+            ['labelYoutube', 'labelFile', 'labelMemo'].forEach(id => {
+                document.getElementById(id).classList.remove('border-blue-400', 'bg-blue-50/30');
+                document.getElementById(id).classList.add('border-transparent');
+            });
+
+            if (type === 'youtube') {
+                urlGroup.classList.remove('hidden');
+                document.getElementById('urlInput').setAttribute('required', 'true');
+                document.getElementById('labelYoutube').classList.add('border-blue-400', 'bg-blue-50/30');
+            } else if (type === 'file') {
+                fileGroup.classList.remove('hidden');
+                document.getElementById('labelFile').classList.add('border-blue-400', 'bg-blue-50/30');
+            } else if (type === 'memo') {
+                memoGroup.classList.remove('hidden');
+                document.getElementById('memoInput').setAttribute('required', 'true');
+                document.getElementById('labelMemo').classList.add('border-blue-400', 'bg-blue-50/30');
+            }
+        }
+
+        // Firebase 데이터 추가 로직
+        async function submitForm(e) {
+            e.preventDefault();
+            
+            const grade = document.getElementById('gradeSelect').value;
+            const category = document.getElementById('categorySelect').value;
+            const uploadType = document.querySelector('input[name="uploadType"]:checked').value;
+            
+            const title = document.getElementById('titleInput').value;
+            const desc = document.getElementById('descInput').value;
+            const link = document.getElementById('urlInput')?.value || '#';
+            const content = document.getElementById('memoInput')?.value || '';
+            
+            const newRes = {
+                grade,
+                category,
+                uploadType,
+                title,
+                desc,
+                link,
+                content,
+                createdAt: Date.now() // 정렬을 위한 타임스탬프
+            };
+            
+            try {
+                // public 컬렉션에 새 문서 추가
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'resources'), newRes);
+                
+                toggleModal('addModal');
+                document.getElementById('resourceForm').reset();
+                toggleInputType('youtube'); 
+                
+                setGrade('all');
+                setCategory('all');
+                document.getElementById('searchInput').value = '';
+                
+                showToast('새 자료가 성공적으로 보관함에 등록되었습니다!');
+            } catch (error) {
+                console.error("추가 오류:", error);
+                showToast('자료 업로드 중 오류가 발생했습니다.');
+            }
+        }
+
+        // --- 5. 기타 유틸리티 ---
+        function toggleAdminMode() {
+            isAdmin = !isAdmin;
+            const addBtns = document.querySelectorAll('.add-resource-btn');
+            
+            const icons = ['adminBtnIcon', 'mobileAdminBtnIcon'];
+            const texts = ['adminBtnText', 'mobileAdminBtnText'];
+            
+            if (isAdmin) {
+                addBtns.forEach(btn => btn.classList.remove('hidden'));
+                icons.forEach(id => document.getElementById(id)?.classList.replace('fa-lock', 'fa-unlock'));
+                texts.forEach(id => { if(document.getElementById(id)) document.getElementById(id).textContent = '관리자 종료'; });
+                showToast('관리자 모드 활성화: 항목을 추가/삭제할 수 있습니다.');
+            } else {
+                addBtns.forEach(btn => btn.classList.add('hidden'));
+                icons.forEach(id => document.getElementById(id)?.classList.replace('fa-unlock', 'fa-lock'));
+                texts.forEach(id => { if(document.getElementById(id)) document.getElementById(id).textContent = '관리자 모드'; });
+                showToast('관리자 모드가 종료되었습니다.');
+            }
+            renderAll();
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').textContent = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3000);
+        }
+
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 10) {
+                nav.classList.add('bg-white/70', 'shadow-sm');
+                nav.classList.remove('glass');
+            } else {
+                nav.classList.remove('bg-white/70', 'shadow-sm');
+                nav.classList.add('glass');
+            }
+        });
+
+        // --- 모듈 스코프 해결을 위한 전역(window) 객체 연결 ---
+        window.setGrade = setGrade;
+        window.setCategory = setCategory;
+        window.renderAll = renderAll;
+        window.toggleModal = toggleModal;
+        window.openDetail = openDetail;
+        window.deleteResource = deleteResource;
+        window.toggleInputType = toggleInputType;
+        window.submitForm = submitForm;
+        window.toggleAdminMode = toggleAdminMode;
+        window.toggleMobileMenu = toggleMobileMenu;
+        window.showToast = showToast;
+
+        // 초기 앱 구동
+        initApp();
+    </script>
+</body>
+</html>
